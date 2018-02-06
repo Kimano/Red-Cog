@@ -29,8 +29,8 @@ def buildHeroTables(self):
     heroes["Alchemist"]=Hero("Alchemist",MainStat.STRENGTH,True,False)
     heroes["Axe"]=Hero("Axe",MainStat.STRENGTH,True,True)
     heroes["Beastmaster"]=Hero("Beastmaster",MainStat.STRENGTH,True,True)
-    heroes["Alchemist"]=Hero("Alchemist",MainStat.STRENGTH,True,False)
-    heroes["Axe"]=Hero("Axe",MainStat.STRENGTH,True,True)
+    heroes["Brewmaster"]=Hero("Brewmaster",MainStat.STRENGTH,True,True)
+    heroes["Bristleback"]=Hero("Bristleback",MainStat.STRENGTH,True,True)
     #Agility Heroes
     
     #Intelligence Heroes

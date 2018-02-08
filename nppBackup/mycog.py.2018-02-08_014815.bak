@@ -20,7 +20,7 @@ class Mycog:
         await self.bot.say(user.mention + " Your items are " + buildItems[0].name + ", " + buildItems[1].name + ", " + buildItems[2].name + ", " + buildItems[3].name + ", " + buildItems[4].name + ", and " + buildItems[5].name)
         costs = 0
         for item in buildItems:
-            costs += item.cost
+            costs += buildItems[item].cost
         await self.bot.say(user.mention + " Total Cost: " + str(costs))
 
     @commands.command(pass_context=True)
@@ -38,7 +38,7 @@ class Mycog:
         await self.bot.say(user.mention + " Your items are " + buildItems[0].name + ", " + buildItems[1].name + ", " + buildItems[2].name + ", " + buildItems[3].name + ", " + buildItems[4].name + ", and " + buildItems[5].name)
         costs = 0
         for item in buildItems:
-            costs += item.cost
+            costs += buildItems[item].cost
         await self.bot.say(user.mention + " Total Cost: " + str(costs))
 
 def setup(bot):
@@ -51,11 +51,12 @@ def selectHero(self):
 #If num is 6, guaranteed to contain at least one pair of boots.
 #If num is less than 6, may or may not have a pair of boots. Chance is 1-(1/6)^num.
 def selectItems(self, num):
-    randItems = list()
+    randItems = dict()
     count = 0
     hasBoots = False
     #Create a destructible list of items we can pop to avoid dupes.
     aux = list(self.items.values())
+    print(str(len(aux)))
     while count < num:
         #If we hit our roll, and don't have a pair of boots, add them
         if random.randint(1,6) == 6 and hasBoots == False:
@@ -67,11 +68,10 @@ def selectItems(self, num):
             hasBoots = True
         #Otherwise, normal item
         else:
+            print(str(len(aux)))
             addItem = aux.pop(random.randint(0,len(aux)-1))
-        randItems.append(addItem)
-        count+=1
-    randItems.sort()
-    return randItems
+        randItems[count]=addItem
+    return randItems.sort()
     
     
 class Hero:

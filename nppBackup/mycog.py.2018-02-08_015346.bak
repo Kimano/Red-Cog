@@ -70,8 +70,7 @@ def selectItems(self, num):
             addItem = aux.pop(random.randint(0,len(aux)-1))
         randItems.append(addItem)
         count+=1
-    randItems.sort()
-    return randItems
+    return randItems.sort()
     
     
 class Hero:

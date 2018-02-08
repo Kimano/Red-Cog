@@ -38,7 +38,7 @@ class Mycog:
         await self.bot.say(user.mention + " Your items are " + buildItems[0].name + ", " + buildItems[1].name + ", " + buildItems[2].name + ", " + buildItems[3].name + ", " + buildItems[4].name + ", and " + buildItems[5].name)
         costs = 0
         for item in buildItems:
-            costs += item.cost
+            costs += buildItems[item].cost
         await self.bot.say(user.mention + " Total Cost: " + str(costs))
 
 def setup(bot):
@@ -70,8 +70,7 @@ def selectItems(self, num):
             addItem = aux.pop(random.randint(0,len(aux)-1))
         randItems.append(addItem)
         count+=1
-    randItems.sort()
-    return randItems
+    return randItems.sort()
     
     
 class Hero:

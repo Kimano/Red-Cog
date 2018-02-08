@@ -9,29 +9,16 @@ class Mycog:
         self.bot = bot
         buildHeroTables(self)
         buildItemTables(self)
-        
-    @commands.command(pass_context=True)
-    async def dc(self, ctx, user: discord.Member=None):
-        if(user is None):
-            user = ctx.message.author
-        name,hero = selectHero(self)
-        await self.bot.say(user.mention + " got " + name)
-        buildItems = selectItems(self, 6)
-        await self.bot.say(user.mention + " Your items are " + buildItems[0].name + ", " + buildItems[1].name + ", " + buildItems[2].name + ", " + buildItems[3].name + ", " + buildItems[4].name + ", and " + buildItems[5].name)
-        costs = 0
-        for item in buildItems:
-            costs += buildItems[item].cost
-        await self.bot.say(user.mention + " Total Cost: " + str(costs))
 
     @commands.command(pass_context=True)
-    async def randomhero(self, ctx, user: discord.Member=None):
+    async def randomHero(self, ctx, user: discord.Member=None):
         if(user is None):
             user = ctx.message.author
         name,hero = selectHero(self)
         await self.bot.say(user.mention + " got " + name)
        
     @commands.command(pass_context=True)
-    async def randomitems(self, ctx, user: discord.Member=None):
+    async def randomItems(self, ctx, user: discord.Member=None):
         if(user is None):
             user = ctx.message.author
         buildItems = selectItems(self, 6)
@@ -92,12 +79,6 @@ class Item:
         self.name = name
         self.cost = cost
         self.tags = tags
-        
-class Handicap:
-    def __init__(self, handicap, text, exclusive, inclusive):
-        self.handicap = handicap
-        self.text = text
-        self.restrictions = restrictions
         
 class MainStat(Enum):
     STRENGTH=1
@@ -304,25 +285,3 @@ def buildItemTables(self):
     
     self.items = items
     self.boots = boots
-    
-def buildRestrictions(self):
-    restrictions = list()
-    
-    restrictions.append(Handicap(1, "1 Random item", [], []))
-    restrictions.append(Handicap(3, "Random hero", [], []))
-    restrictions.append(Handicap(2, "No TPs (BoTs available)", [], []))
-    restrictions.append(Handicap(6, "No TPs, No BoTs", [], []))
-    restrictions.append(Handicap(3, "No regen consumables (You CAN buy a bottle)", [], []))
-    restrictions.append(Handicap(2, "No lane CS before 10 minutes", [], []))
-    restrictions.append(Handicap(4, "No lane CS before 20 minutes", [], []))
-    restrictions.append(Handicap(3, "No jungle CS the entire game", [], []))
-    restrictions.append(Handicap(2, "No defensive items", [], []))
-    restrictions.append(Handicap(2, "No offensive items", [], []))
-    restrictions.append(Handicap(2, "You must buy a divine rapier", [], []))
-    restrictions.append(Handicap(1, "No denying", [], []))
-    restrictions.append(Handicap(3, "No talents", [], []))
-    restrictions.append(Handicap(6, "No ultimate", [], []))
-    restrictions.append(Handicap(1, "You must start the game with brown boots", [], []))
-    restrictions.append(Handicap(3, "No boots", [], []))
-    
-    self.restrictions = restrictions

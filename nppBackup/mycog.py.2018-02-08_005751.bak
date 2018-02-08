@@ -12,35 +12,33 @@ class Mycog:
         
     @commands.command(pass_context=True)
     async def dc(self, ctx, user: discord.Member=None):
-        if(user is None):
-            user = ctx.message.author
-        name,hero = selectHero(self)
-        await self.bot.say(user.mention + " got " + name)
-        buildItems = selectItems(self, 6)
-        await self.bot.say(user.mention + " Your items are " + buildItems[0].name + ", " + buildItems[1].name + ", " + buildItems[2].name + ", " + buildItems[3].name + ", " + buildItems[4].name + ", and " + buildItems[5].name)
-        costs = 0
-        for item in buildItems:
-            costs += buildItems[item].cost
-        await self.bot.say(user.mention + " Total Cost: " + str(costs))
+        self.randomhero(self, ctx)
+        self.randomitems(self, ctx)
 
     @commands.command(pass_context=True)
     async def randomhero(self, ctx, user: discord.Member=None):
-        if(user is None):
-            user = ctx.message.author
-        name,hero = selectHero(self)
-        await self.bot.say(user.mention + " got " + name)
+        self.rh(self, ctx, user)
        
     @commands.command(pass_context=True)
     async def randomitems(self, ctx, user: discord.Member=None):
-        if(user is None):
-            user = ctx.message.author
-        buildItems = selectItems(self, 6)
-        await self.bot.say(user.mention + " Your items are " + buildItems[0].name + ", " + buildItems[1].name + ", " + buildItems[2].name + ", " + buildItems[3].name + ", " + buildItems[4].name + ", and " + buildItems[5].name)
-        costs = 0
-        for item in buildItems:
-            costs += buildItems[item].cost
-        await self.bot.say(user.mention + " Total Cost: " + str(costs))
+        self.ri(self, ctx, user)
 
+def rh(self, ctx, user: discord.Member=none):
+    if(user is None):
+        user = ctx.message.author
+    name,hero = selectHero(self)
+    await self.bot.say(user.mention + " got " + name)
+
+def ri(self, ctw, user: discord.Member=none):
+    if(user is None):
+        user = ctx.message.author
+    buildItems = selectItems(self, 6)
+    await self.bot.say(user.mention + " Your items are " + buildItems[0].name + ", " + buildItems[1].name + ", " + buildItems[2].name + ", " + buildItems[3].name + ", " + buildItems[4].name + ", and " + buildItems[5].name)
+    costs = 0
+    for item in buildItems:
+        costs += buildItems[item].cost
+    await self.bot.say(user.mention + " Total Cost: " + str(costs))    
+        
 def setup(bot):
     bot.add_cog(Mycog(bot))
 

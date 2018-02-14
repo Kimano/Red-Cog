@@ -63,30 +63,30 @@ def getHandicapStrings(self, value, user):
     
 #Builds the handicap list.
 def subset_sum(self, handicapList, target, list=[], partial_sum=0):
+    toGet = target-partial_sum
     #Check to see if we're done.
     if partial_sum == target:
         return list
         
     #Now go through our handicap list and remove anything that we can't use to get to the target.
-    toGet = target-partial_sum
-    availableList = []
     for i in handicapList:
-        if i.value <= toGet and i not in list:
-            availableList.append(i)
-            print(str(i))
+        if i.value > toGet:
+            handicapList.remove(i)
+
             
     #If our available handicap list is empty now, we don't have anything available to fill, so pop a random item and recurse with the full handicap list
-    if len(availableList) == 0:
+    if len(handicapList) == 0:
         toRemove = random.choice(list)
         list.remove(toRemove)
         #recurse into the set of handicaps
-        return subset_sum(self, handicapList, target, list, partial_sum-toRemove.value)
+        return subset_sum(self, copy.deepcopy(self.handicaps), target, list, partial_sum-toRemove.value)
     else:
         #We can get a valid one, so randomly pick and add it.
-        toAppend = random.choice(availableList)
+        toAppend = random.choice(handicapList)
         list.append(toAppend)
         partial_sum += toAppend.value
-        return subset_sum(self, handicapList, target, list, partial_sum)
+        #return subset_sum(self, handicapList, target, list, partial_sum)
+        return list
  
 #Select a random list of <num> items for a build
 #If num is 6, guaranteed to contain at least one pair of boots.

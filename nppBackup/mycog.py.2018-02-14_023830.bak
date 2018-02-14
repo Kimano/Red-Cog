@@ -71,7 +71,7 @@ def subset_sum(self, handicapList, target, list=[], partial_sum=0):
     toGet = target-partial_sum
     availableList = []
     for i in handicapList:
-        if i.value <= toGet and i not in list:
+        if i.value <= toGet:
             availableList.append(i)
             print(str(i))
             

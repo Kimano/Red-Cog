@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands
 from enum import Enum
 import random
-import copy
 
 class Mycog:
 
@@ -15,7 +14,7 @@ class Mycog:
     @commands.command(pass_context=True)        
     async def hc(self, ctx, handicapValue):
         user = ctx.message.author
-        strings = getHandicapStrings(self, int(handicapValue), user)
+        strings = getHandicapStrings(self, handicapValue, user)
         for s in strings:
             await self.bot.say(s)
         
@@ -55,38 +54,35 @@ def selectHero(self):
     
 def getHandicapStrings(self, value, user):
     strings = []
-    strings.append(user.mention + " needs " + str(value) + " points")
-    list = subset_sum(self, copy.deepcopy(self.handicaps), value, [])
-    for i in list:
-        strings.append(user.mention + " ("+ str(i.value) + ") " + i.text)
+    strings.append(user.mention + " needs " + value + " points")
+    list = subset_sum(self.handicaps.copy(), value, [])
+    for i, n in enumerate(list):
+        strings.append(user.mention + " ("+ i.value + ") " + i.text)
     return strings
     
 #Builds the handicap list.
-def subset_sum(self, handicapList, target, list=[], partial_sum=0):
+def subset_sum(handicaps, target, list=[], partial_sum=0):
     #Check to see if we're done.
     if partial_sum == target:
         return list
         
     #Now go through our handicap list and remove anything that we can't use to get to the target.
-    toGet = target-partial_sum
-    availableList = []
-    for i in handicapList:
-        if i.value <= toGet and i not in list:
-            availableList.append(i)
-            print(str(i))
+    for i, n in enumerate(handicaps):
+        if i.value > (target-partial_sum):
+            handicaps.remove(i)
             
     #If our available handicap list is empty now, we don't have anything available to fill, so pop a random item and recurse with the full handicap list
-    if len(availableList) == 0:
+    if len(handicaps) == 0:
         toRemove = random.choice(list)
         list.remove(toRemove)
         #recurse into the set of handicaps
-        return subset_sum(self, handicapList, target, list, partial_sum-toRemove.value)
+        return subset_sum(sorted(self.handicaps, key=value, reverse=True), target, list, partial_sum-toRemove.value)
     else:
         #We can get a valid one, so randomly pick and add it.
-        toAppend = random.choice(availableList)
+        toAppend = random.choice(handicaps)
         list.append(toAppend)
         partial_sum += toAppend.value
-        return subset_sum(self, handicapList, target, list, partial_sum)
+        return subset_sum(handicaps, target, list, partial_sum)
  
 #Select a random list of <num> items for a build
 #If num is 6, guaranteed to contain at least one pair of boots.
@@ -152,6 +148,13 @@ class Item:
         elif self.name > other.name:
             return False
         return False
+            
+class Handicap:
+    def __init__(self, value, text, exclusive, inclusive):
+        self.value = value
+        self.text = text
+        self.exclusive = exclusive
+        self.inclusive = inclusive
         
 class MainStat(Enum):
     STRENGTH=1
@@ -358,26 +361,6 @@ def buildItemTables(self):
     
     self.items = items
     self.boots = boots
-
-class Handicap:
-    def __init__(self, value, text, exclusive, inclusive):
-        self.value = value
-        self.text = text
-        self.exclusive = exclusive
-        self.inclusive = inclusive
-    
-    def __str__(self):
-        return "(" + str(self.value) + ")" + self.text
-        
-    def __eq__(self, other):
-        return self.value == other.value and self.text == other.text
-        
-    def __lt__(self, other):
-        if self.value < other.value:
-            return True
-        elif self.value > other.value:
-            return False
-        return False
     
 def buildHandicaps(self):
     handicaps = list()
